@@ -1,0 +1,64 @@
+name: Terraform CI
+
+on:
+  workflow_dispatch:
+    inputs:
+      db_password:
+        description: "RDS master password"
+        required: true
+        default: "1233456"
+      admin_email:
+        description: "Email to receive CloudWatch alerts"
+        required: true
+        default: "rwaydasalah98@gmail.com"
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    permissions:
+      deployments: write
+      contents: read
+      statuses: write
+      id-token: write  # Required for OIDC authentication
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.5.7
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::356630932809:role/DevOps-Infra
+        aws-region: us-east-1
+
+    - name: Terraform Init
+      id: init
+      run: |
+        terraform init -reconfigure \
+          -backend-config="bucket=task1terraform" \
+          -backend-config="key=task1terraformbucket" \
+          -backend-config="region=us-east-1"
+
+    - name: Terraform validate
+      run: terraform validate
+
+    - name: Terraform plan
+      run: |
+        terraform plan \
+          -out=tfplan \
+          -var="db_password=${{ github.event.inputs.db_password }}" \
+          -var="admin_email=${{ github.event.inputs.admin_email }}" \
+          -input=false
+
+    - name: Terraform apply
+      if: github.ref == 'refs/heads/main'
+      run: |
+        terraform apply \
+          -input=false \
+          -auto-approve \
+          tfplan

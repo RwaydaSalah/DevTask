@@ -1,0 +1,40 @@
+name: Destroy Infrastructure
+
+on:
+  workflow_dispatch:
+
+jobs:
+  destroy-serverless:
+    runs-on: ubuntu-latest
+    environment: AWS_ROLE_TO_ASSUME
+    permissions:
+      deployments: write
+      contents: read
+      statuses: write
+      id-token: write  # Required for OIDC authentication
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::356630932809:role/DevOps-Infra
+        aws-region: us-east-1
+            
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: "1.5.7"
+        
+    - name: Terraform Init
+      id: init
+      run: |
+        terraform init -reconfigure \
+          -backend-config="bucket=task1terraform" \
+          -backend-config="key=task1terraformbucket" \
+          -backend-config="region=us-east-1"
+      
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
