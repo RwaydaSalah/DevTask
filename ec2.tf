@@ -9,6 +9,8 @@ resource "aws_instance" "backend" {
     volume_type = "gp3"
     volume_size = 8
   }
+  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
+  user_data = file("${path.module}/userdata.sh")  
 
   tags = {
     Name = "backend"
@@ -27,6 +29,9 @@ resource "aws_instance" "frontend" {
     volume_type = "gp3"
     volume_size = 8
   }
+  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name  
+
+  user_data = file("${path.module}/userdata.sh")
 
   tags = {
     Name = "frontend"
