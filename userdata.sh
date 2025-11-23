@@ -6,6 +6,7 @@ apt-get update -y
 
 # Install Docker
 apt-get install -y docker.io
+usermod -aG docker ubuntu
 
 # Start & enable Docker
 systemctl enable docker
@@ -18,12 +19,6 @@ chmod +x /usr/local/bin/docker-compose
 # Install Git
 apt-get install -y git
 
-# Clone your Uptime Kuma Frontend repo
-git clone https://github.com/RwaydaSalah/uptime-kuma-frontend.git /home/ubuntu/app
-cd /home/ubuntu/app
 
-# Navigate to the docker-compose file path
-cd docker
 
-# Run docker compose using the correct file
-/usr/local/bin/docker-compose -f docker-compose-dev.yml up -d
+
