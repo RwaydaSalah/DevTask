@@ -68,7 +68,7 @@ jobs:
       shell: bash
       run: |
         terraform output frontend_ec2_id
-        FRONTEND_ID=$(terraform output -raw frontend_ec2_id | tr -d '\n')
+        FRONTEND_ID=$(terraform output -raw frontend_ec2_id | tr -d '"\n')
         echo "FRONTEND_ID=$FRONTEND_ID"
         echo "FRONTEND_ID=$FRONTEND_ID" >> $GITHUB_ENV
 
