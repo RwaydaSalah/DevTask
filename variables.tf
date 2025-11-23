@@ -10,15 +10,6 @@ variable "instance_type" {
   default     = "t3.micro"
 }
 
-# variable "backend_subnet_id" {
-# description = "Subnet for backend"
-#  type        = string
-# } 
-
-# variable "frontend_subnet_id" {
-# description = "Subnet for frontend"
- # type        = string
-#}
 variable "db_username" {
   description = "RDS master username"
   type        = string

@@ -1,3 +1,6 @@
+# ---------------------------
+# EC2 Instance Backend with EBS Volume
+# ---------------------------
 resource "aws_instance" "backend" {
   ami                         = data.aws_ami.ubuntu_2204.id
   instance_type               = var.instance_type
@@ -16,7 +19,9 @@ resource "aws_instance" "backend" {
     Name = "backend"
   }
 }
-
+# ---------------------------
+# EC2 Instance Frontend  WITH EBS VOLUME
+# ---------------------------
 
 resource "aws_instance" "frontend" {
   ami                         = data.aws_ami.ubuntu_2204.id
@@ -37,8 +42,9 @@ resource "aws_instance" "frontend" {
     Name = "frontend"
   }
 }
-
-
+# -------------------------------------------
+# AWS AMI Data Source for Ubuntu 22.04
+#--------------------------------------------
 
 data "aws_ami" "ubuntu_2204" {
   most_recent = true
@@ -53,5 +59,5 @@ data "aws_ami" "ubuntu_2204" {
     values = ["hvm"]
   }
 
-  owners = ["099720109477"] # Canonical
+  owners = ["099720109477"] 
 }

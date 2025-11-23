@@ -1,4 +1,4 @@
-name: Terraform CI
+name: Delpoy Infrastructure Using CI 
 
 on:
   workflow_dispatch:

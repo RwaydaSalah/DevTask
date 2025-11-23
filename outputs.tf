@@ -1,3 +1,7 @@
+# ---------------------------
+# Outputs for EC2, RDS, and SNS resources
+# ---------------------------
+
 output "backend_public_ip" {
   description = "Backend instance public IP"
   value       = aws_instance.backend.public_ip

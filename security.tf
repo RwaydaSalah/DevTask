@@ -1,6 +1,10 @@
+# ---------------------------
+# Security Group for EC2 Instances
+# allow SSH and port 3001 access
+# ---------------------------
 resource "aws_security_group" "ec2_sg" {
   name        = "ec2-sg"
-  description = "Allow SSH and HTTP"
+  description = "Allow SSH and port 3001 access"
   vpc_id      = data.aws_vpc.default.id
 
   ingress {
@@ -11,8 +15,8 @@ resource "aws_security_group" "ec2_sg" {
   }
 
   ingress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 3001
+    to_port     = 3001
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
