@@ -79,5 +79,6 @@ jobs:
         token: ${{ secrets.PAT_TOKEN }}
         repository: RwaydaSalah/uptime-kuma-frontend
         event-type: ec2-ready
-        client-payload: '{"instance_id": "${{ env.FRONTEND_ID }}"}'
+       # client-payload: '{"instance_id": "{{ env.FRONTEND_ID }}"}'
+        client-payload: '{"ec2_id":"$EC2_ID"}'
 
