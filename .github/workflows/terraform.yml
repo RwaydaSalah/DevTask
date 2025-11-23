@@ -63,9 +63,10 @@ jobs:
           -auto-approve \
           tfplan
     
-    - name: Get EC2 Instance ID
-      id: id
-      run: echo "EC2_ID=$(terraform output -raw frontend_ec2_id)" >> $GITHUB_ENV
+    - name: Get Frontend EC2 ID
+      id: get_ec2
+      run: |
+       echo "::set-output name=frontend_id::$(terraform output -raw frontend_ec2_id)"
 
     - name: Trigger Frontend Repo
       uses: peter-evans/repository-dispatch@v3
@@ -73,4 +74,4 @@ jobs:
         token: ${{ secrets.PAT_TOKEN }}
         repository: RwaydaSalah/uptime-kuma-frontend
         event-type: ec2-ready
-        client-payload: '{"frontend_id": "${{ env.EC2_ID }}"'
+        client-payload: '{"instance_id": "${{ steps.get_ec2.outputs.frontend_id }}"}'
