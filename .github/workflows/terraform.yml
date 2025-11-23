@@ -64,10 +64,14 @@ jobs:
           tfplan
     
     - name: Get Frontend EC2 ID
-      id: get_ec2
+      id: frontend
+      shell: bash
       run: |
-       FRONTEND_ID=$(terraform output -raw frontend_ec2_id | tr -d '\n')
-       echo "FRONTEND_ID=$FRONTEND_ID" >> $GITHUB_ENV
+        terraform output frontend_ec2_id
+        FRONTEND_ID=$(terraform output -raw frontend_ec2_id | tr -d '\n')
+        echo "FRONTEND_ID=$FRONTEND_ID"
+        echo "FRONTEND_ID=$FRONTEND_ID" >> $GITHUB_ENV
+
 
     - name: Trigger Frontend Repo
       uses: peter-evans/repository-dispatch@v3
